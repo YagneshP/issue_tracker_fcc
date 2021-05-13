@@ -10,6 +10,6 @@ const IssueSchema = new Schema({
   status_text:{type:String},
 },{timestamps:true});
 
-const Issue = mongoose.model('Isuue', IssueSchema);
+const Issue = mongoose.model('Issue', IssueSchema);
 
 module.exports = Issue;

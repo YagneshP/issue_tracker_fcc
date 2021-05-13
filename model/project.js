@@ -7,7 +7,7 @@ const ProjectSchema = new Schema({
 		unique:true
 	},
 	issues: [{
-		type: mongoose.Types.ObjectId,
+		type: Schema.Types.ObjectId,
 		ref:'Issue'
 	}]
 });
