@@ -3,14 +3,24 @@ const chai = require('chai');
 const assert = chai.assert;
 const server = require('../server');
 
+
 chai.use(chaiHttp);
 
 suite('Functional Tests', function() {
-  
+  suite('intregation testing of Issue tracker', function(){
+		test('test GET req to create new issue', function(done){ //change GET to POST
+			chai.request(server)
+					.get('/api/issues/apitest')
+					.end(function(err,res){
+						assert.equal(res.status,200)
+						assert.equal(res.text,"This is a get route for project issues")
+						done()
+					})
+		})
+	})
 });
 
 
-// You can provide your own project, not the example URL.
 
 // You can send a POST request to /api/issues/{projectname} with form data containing the required fields issue_title, issue_text, created_by, and optionally assigned_to and status_text.
 

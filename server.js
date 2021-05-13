@@ -10,9 +10,14 @@ const fccTestingRoutes  = require('./routes/fcctesting.js');
 const runner            = require('./test-runner');
 
 let app = express();
-
+let dbUrl;
 //connection to mongo Database
-const dbUrl = process.env.DB;
+if(process.env.NODE_ENV === 'test'){
+dbUrl= process.env.TEST_DB ;
+}else{
+	dbUrl= process.env.DB; 
+}
+
 mongoose.connect(dbUrl, {useNewUrlParser: true, useUnifiedTopology: true});
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
