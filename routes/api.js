@@ -27,7 +27,8 @@ module.exports = function (app) {
     })
     
     .post(async (req, res)=>{
-			// Create an issue with every field: POST request to /api/issues/{project}
+			try {
+				// Create an issue with every field: POST request to /api/issues/{project}
 			// Create an issue with only required fields: POST request to /api/issues/{project}
 			// Create an issue with missing required fields: POST request to /api/issues/{project}
       let project_name = req.params.project;
@@ -42,30 +43,34 @@ module.exports = function (app) {
 			});
 			 project.issues.push(newIssue);
 			await project.save();
-			console.log(project);
 			res.status(200).json(newIssue);
+				
+			} catch (error) {
+				res.status(500).json({error: error.message});
+			}
+			
     })
     
-    .put(function (req, res){
+    .put(async(req, res) => {
 			// Update one field on an issue: PUT request to /api/issues/{project}
 			// Update multiple fields on an issue: PUT request to /api/issues/{project}
 			// Update an issue with missing _id: PUT request to /api/issues/{project}
 			// Update an issue with no fields to update: PUT request to /api/issues/{project}
 			// Update an issue with an invalid _id: PUT request to /api/issues/{project}
-      let project = req.params.project;
-      let id = req.body.id;
-			console.log("id",id);
-			res.send("heelo");
+      // let project = req.params.project;
+			const updatedIssue = await Issue.findByIdAndUpdate(req.body._id,{
+				...req.body
+			},{ new:true});
+			res.status(200).json(updatedIssue);
     })
     
-    .delete(function (req, res){
+    .delete(async (req, res)=>{
 			// Delete an issue: DELETE request to /api/issues/{project}
 			// Delete an issue with an invalid _id: DELETE request to /api/issues/{project}
 			// Delete an issue with missing _id: DELETE request to /api/issues/{project}
-      let project = req.params.project;
-      let id = req.body.id;
-			console.log("id",req.body);
-			res.send("delete");
+      const deletedIssue = await Issue.findByIdAndDelete(req.body._id);
+			const updatedProject = await Project.findOneAndUpdate({name:req.params.project}, {$pull :{issues: req.body._id}})
+			res.status(200).json({result:'successfully deleted',_id:`${deletedIssue._id}`});
     });
     
 };
