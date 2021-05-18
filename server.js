@@ -10,8 +10,8 @@ const fccTestingRoutes  = require('./routes/fcctesting.js');
 const runner            = require('./test-runner');
 
 let app = express();
-let dbUrl;
-//connection to mongo Database
+let dbUrl ;
+// connection to mongo Database
 if(process.env.NODE_ENV === 'test'){
 dbUrl= process.env.TEST_DB ;
 }else{

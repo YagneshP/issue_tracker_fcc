@@ -10,8 +10,16 @@ module.exports = function (app) {
 			// View issues on a project with one filter: GET request to /api/issues/{project}
 			// View issues on a project with multiple filters: GET request to /api/issues/{project}
       let project_name = req.params.project;
+			let queries = req.query
+			console.log('query',queries);
 			const foundProject =  await Project.findOne({name:project_name}).populate('issues');
 			if(foundProject){
+				if(Object.keys(queries).length !== 0){
+					//i have used String() but not sure how it is working
+					const filteredIssues = 	foundProject.issues.filter((issue) =>Object.keys(queries).every(k =>String(issue[k]) == String(queries[k]) )? issue : null)
+					return res.status(200).json(filteredIssues)
+				}
+			
 			// View issues on a project: GET request to /api/issues/{project}
 			return	res.status(200).json(foundProject.issues);
 			} else{
@@ -28,7 +36,7 @@ module.exports = function (app) {
     
     .post(async (req, res)=>{
 			try {
-				// Create an issue with every field: POST request to /api/issues/{project}
+			// Create an issue with every field: POST request to /api/issues/{project}
 			// Create an issue with only required fields: POST request to /api/issues/{project}
 			// Create an issue with missing required fields: POST request to /api/issues/{project}
       let project_name = req.params.project;
@@ -37,16 +45,16 @@ module.exports = function (app) {
 				project = new Project({name:project_name});
 				await project.save();
 			}
+			// console.log("body",req.body);
 			const newIssue = new Issue(req.body);
-			await newIssue.save((err)=>{
-				console.log(err);
-			});
+			await newIssue.save();
 			 project.issues.push(newIssue);
 			await project.save();
-			res.status(200).json(newIssue);
+			// console.log(typeof(newIssue));
+		return	res.status(200).json(newIssue);
 				
 			} catch (error) {
-				res.status(500).json({error: error.message});
+				res.status(500).json({error: 'required field(s) missing'});
 			}
 			
     })
