@@ -5,7 +5,6 @@ const assert = chai.assert;
 const server = require("../server");
 const Issue = require("../model/issue");
 const Project = require("../model/project");
-const assertionAnalyser = require("../assertion-analyser");
 
 chai.use(chaiHttp);
 
@@ -363,12 +362,7 @@ suite("Functional Tests", function () {
   });
 });
 
-// You can send a DELETE request to /api/issues/{projectname} with an _id to delete an issue. If no _id is sent, the return value is { error: 'missing _id' }. On success, the return value is { result: 'successfully deleted', '_id': _id }. On failure, the return value is { error: 'could not delete', '_id': _id }.
-
-// All 14 functional tests are complete and passing.
-
 // utils
-
 let createProject = () => {
   let project = new Project({
     name: "TestProject",

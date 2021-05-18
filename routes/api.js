@@ -5,7 +5,6 @@ const Issue = require("../model/issue");
 module.exports = function (app) {
   app
     .route("/api/issues/:project")
-
     .get(async (req, res) => {
       try {
         let project_name = req.params.project;
