@@ -67,13 +67,12 @@ module.exports = function (app) {
             "status_text",
           ];
           if (fields.some((i) => req.body.hasOwnProperty(i))) {
-            foundIssue = Object.assign(foundIssue, req.body);
-						await foundIssue.save()
+           let updatedIssue = await Issue.findByIdAndUpdate(req.body._id,{...req.body})
             return res
               .status(200)
               .json({
                 result: "successfully updated",
-                _id: foundIssue._id
+                _id: updatedIssue._id
               });
           } else {
             return res
