@@ -10,7 +10,7 @@ const IssueSchema = new Schema(
     open: { type: Boolean, default: true },
     status_text: { type: String, default: "open" },
   },
-  { timestamps: true }
+	{timestamps:{createdAt:"created_on",updatedAt:"updated_on"}}
 );
 
 const Issue = mongoose.model("Issue", IssueSchema);
