@@ -57,7 +57,7 @@ module.exports = function (app) {
     .put(async (req, res) => {
       try {
         if (req.body._id) {
-          const foundIssue = await Issue.findById(req.body._id);
+          let foundIssue = await Issue.findById(req.body._id);
           let fields = [
             "issue_title",
             "issue_text",
@@ -67,13 +67,13 @@ module.exports = function (app) {
             "status_text",
           ];
           if (fields.some((i) => req.body.hasOwnProperty(i))) {
-            let updatedIssue = await Object.assign(foundIssue, req.body).save();
+            foundIssue = Object.assign(foundIssue, req.body);
+						foundIssue.save()
             return res
               .status(200)
               .json({
                 result: "successfully updated",
-                _id: updatedIssue._id,
-                updatedIssue,
+                _id: foundIssue._id
               });
           } else {
             return res

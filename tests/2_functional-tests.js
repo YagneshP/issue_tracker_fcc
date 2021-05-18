@@ -248,12 +248,7 @@ suite("Functional Tests", function () {
         `${issue._id}`,
         "should be the issue._id"
       );
-      assert.propertyVal(
-        res.body.updatedIssue,
-        "assigned_to",
-        "freecodecamp",
-        "this shold be updated issue property"
-      ); //if doesnt pass fcc test remove this and from api.js delete property 'updated issue'
+      
     });
     // Update an issue with missing _id: PUT request to /api/issues/{project}
     test("PUT / Update an issue with missing _id", async function () {
