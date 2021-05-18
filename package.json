@@ -22,6 +22,9 @@
     "type": "git",
     "url": "https://github.com/freeCodeCamp/boilerplate-project-issuetracker"
   },
+	"engines": {
+    "node": "15.x"
+  },
   "keywords": [
     "node",
     "hyperdev",
