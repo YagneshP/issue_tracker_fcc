@@ -68,7 +68,7 @@ module.exports = function (app) {
           ];
           if (fields.some((i) => req.body.hasOwnProperty(i))) {
             foundIssue = Object.assign(foundIssue, req.body);
-						foundIssue.save()
+						await foundIssue.save()
             return res
               .status(200)
               .json({
