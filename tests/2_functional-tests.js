@@ -116,13 +116,14 @@ suite("Functional Tests", function () {
     // You can send a POST request to /api/issues/{projectname} with form data containing the required fields issue_title, issue_text, created_by, and optionally assigned_to and status_text.
     // Create an issue with every field: POST request to /api/issues/{project}
     test("POST / create issue with all field", function (done) {
-			let project = createProject()
+			// let project = createProject()
       let newIssue = createIssue(allFields);
       chai
         .request(server)
-        .post(`/api/issues/${project.name}`)
+        .post('/api/issues/:project')
         .send(newIssue)
         .end(function (err, res) {
+					// console.log("response",res)
           assert.equal(res.status, 200);
           assert.isObject(res, "Issue should be an Object");
           assert.property(res.body, "_id");
@@ -165,14 +166,15 @@ suite("Functional Tests", function () {
     // The POST request to /api/issues/{projectname} will return the created object, and must include all of the submitted fields. Excluded optional fields will be returned as empty strings. Additionally, include created_on (date/time), updated_on (date/time), open (boolean, true for open - default value, false for closed), and _id.
     // Create an issue with only required fields: POST request to /api/issues/{project}
     test("POST / create an issue with only required field", (done) => {
-			let project = createProject()
+			// let project = createProject()
       let newIssue = createIssue(requiredField);
       chai
         .request(server)
-        .post(`/api/issues/${project.name}`)
+        .post('/api/issues/:project')
         .send(newIssue)
         .end((err, res) => {
           if (err) done(err);
+					// console.log("response",res)
           assert.equal(res.status, 200);
           assert.propertyVal(
             res.body,
@@ -183,8 +185,8 @@ suite("Functional Tests", function () {
           assert.propertyVal(
             res.body,
             "status_text",
-            "open",
-            'status_text sholud "open" by deafualt'
+            "",
+            'status_text sholud be empty string'
           );
           done();
         });

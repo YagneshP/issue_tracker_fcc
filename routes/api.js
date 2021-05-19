@@ -38,7 +38,7 @@ module.exports = function (app) {
 
     .post(async (req, res) => {
       try {
-				consol.log("req.body:", req.body);
+				console.log("req.body:", req.body);
         let project_name = req.params.project;
         let project = await Project.findOne({ name: project_name });
         if (!project) {
@@ -51,6 +51,7 @@ module.exports = function (app) {
         await project.save();
         return res.status(200).json(newIssue);
       } catch (error) {
+				console.log(error);
         res.status(500).json({ error: "required field(s) missing" });
       }
     })
