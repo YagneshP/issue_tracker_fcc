@@ -62,13 +62,13 @@ suite("Functional Tests", function () {
       );
       assert.property(
         res.body[0],
-        "createdAt",
-        'issue should have "createdAt" property'
+        "created_on",
+        'issue should have "created_on" property'
       );
       assert.property(
         res.body[0],
-        "updatedAt",
-        'issue should have "updatedAt" property'
+        "updated_on",
+        'issue should have "updated_on" property'
       );
     });
 
@@ -157,8 +157,8 @@ suite("Functional Tests", function () {
             "open",
             'status_text should be "open"'
           );
-          assert.property(res.body, "createdAt");
-          assert.property(res.body, "updatedAt");
+          assert.property(res.body, "created_on");
+          assert.property(res.body, "updated_on");
           done();
         });
     });
