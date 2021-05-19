@@ -38,6 +38,7 @@ module.exports = function (app) {
 
     .post(async (req, res) => {
       try {
+				consol.log("req.body:", req.body);
         let project_name = req.params.project;
         let project = await Project.findOne({ name: project_name });
         if (!project) {
@@ -102,7 +103,7 @@ module.exports = function (app) {
             .json({
               result: "successfully deleted",
               _id: `${deletedIssue._id}`,
-              deletedIssue,
+              // deletedIssue,
             });
         } else {
           return res.status(500).json({ error: "missing _id" });
