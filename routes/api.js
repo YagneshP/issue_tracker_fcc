@@ -85,7 +85,9 @@ module.exports = function (app) {
               .json({ error: "required field(s) missing", _id: foundIssue._id });
           }
         } else {
-          return res.status(500).json({ error: "missing _id" });
+          return res
+					// .status(500)
+					.json({ error: "missing _id" });
         }
       } catch (err) {
         return res
