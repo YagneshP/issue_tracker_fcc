@@ -77,7 +77,7 @@ module.exports = function (app) {
           } else {
             return res
               .status(500)
-              .json({ error: "no update field(s) sent", _id: foundIssue._id });
+              .json({ error: "required field(s) missing", _id: foundIssue._id });
           }
         } else {
           return res.status(500).json({ error: "missing _id" });

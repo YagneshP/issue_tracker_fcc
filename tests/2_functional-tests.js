@@ -116,10 +116,11 @@ suite("Functional Tests", function () {
     // You can send a POST request to /api/issues/{projectname} with form data containing the required fields issue_title, issue_text, created_by, and optionally assigned_to and status_text.
     // Create an issue with every field: POST request to /api/issues/{project}
     test("POST / create issue with all field", function (done) {
+			let project = createProject()
       let newIssue = createIssue(allFields);
       chai
         .request(server)
-        .post("/api/issues/:project")
+        .post(`/api/issues/${project.name}`)
         .send(newIssue)
         .end(function (err, res) {
           assert.equal(res.status, 200);
@@ -164,10 +165,11 @@ suite("Functional Tests", function () {
     // The POST request to /api/issues/{projectname} will return the created object, and must include all of the submitted fields. Excluded optional fields will be returned as empty strings. Additionally, include created_on (date/time), updated_on (date/time), open (boolean, true for open - default value, false for closed), and _id.
     // Create an issue with only required fields: POST request to /api/issues/{project}
     test("POST / create an issue with only required field", (done) => {
+			let project = createProject()
       let newIssue = createIssue(requiredField);
       chai
         .request(server)
-        .post("/api/issues/:project")
+        .post(`/api/issues/${project.name}`)
         .send(newIssue)
         .end((err, res) => {
           if (err) done(err);
@@ -190,10 +192,11 @@ suite("Functional Tests", function () {
     // If you send a POST request to /api/issues/{projectname} without the required fields, returned will be the error { error: 'required field(s) missing' }
     // Create an issue with missing required fields: POST request to /api/issues/{project}
     test("POST / missing required field", (done) => {
+			let project = createProject()
       let newIssue = new Issue({});
       chai
         .request(server)
-        .post("/api/issues/:project")
+        .post(`/api/issues/${project.name}`)
         .send(newIssue)
         .end((err, res) => {
           if (err) done(err);
@@ -229,11 +232,12 @@ suite("Functional Tests", function () {
     });
     // Update multiple fields on an issue: PUT request to /api/issues/{project}
     test("PUT / Update multiple fields on an issue", async function () {
-      let issue = createIssue(allFields);
+      let project = createProject()
+			let issue = createIssue(allFields);
       await issue.save();
       let res = await chai
         .request(server)
-        .put("/api/issues/:project")
+        .put(`/api/issues/${project.name}`)
         .send({ _id: issue._id, open: false, assigned_to: "freecodecamp" });
       assert.equal(res.status, 200);
       assert.propertyVal(
@@ -252,11 +256,12 @@ suite("Functional Tests", function () {
     });
     // Update an issue with missing _id: PUT request to /api/issues/{project}
     test("PUT / Update an issue with missing _id", async function () {
+			let project = createProject();
       let issue = createIssue(allFields);
       await issue.save();
       let res = await chai
         .request(server)
-        .put("/api/issues/:project")
+        .put(`/api/issues/${project.name}`)
         .send({ open: false, assigned_to: "freecodecamp" });
       assert.equal(res.status, 500);
       assert.propertyVal(
@@ -268,27 +273,29 @@ suite("Functional Tests", function () {
     });
     // Update an issue with no fields to update: PUT request to /api/issues/{project}
     test("PUT / Update an issue with no fields to update", async function () {
+			let project = createProject();
       let issue = createIssue(allFields);
       await issue.save();
       let res = await chai
         .request(server)
-        .put("/api/issues/:project")
+        .put(`/api/issues/${project.name}`)
         .send({ _id: issue._id });
       assert.equal(res.status, 500);
       assert.propertyVal(
         res.body,
         "error",
-        "no update field(s) sent",
+        "required field(s) missing",
         "Should get missing fields error when fileds are not provided"
       );
     });
     // Update an issue with an invalid _id: PUT request to /api/issues/{project}
     test("PUT /  Update an issue with an invalid _id", async function () {
+			let project = createProject();
       let issue = createIssue(allFields);
       await issue.save();
       let res = await chai
         .request(server)
-        .put("/api/issues/:project")
+        .put(`/api/issues/${project.name}`)
         .send({ _id: "12335050554fkdl", open: false });
       assert.equal(res.status, 500);
       assert.propertyVal(
@@ -303,11 +310,12 @@ suite("Functional Tests", function () {
   suite("DELETE / route", function () {
     // Delete an issue: DELETE request to /api/issues/{project}
     test("DELETE/ Delete an issue", async () => {
+			let project = createProject();
       let issue = createIssue(allFields);
       await issue.save();
       let res = await chai
         .request(server)
-        .delete("/api/issues/:project")
+        .delete(`/api/issues/${project.name}`)
         .send({ _id: issue._id });
       assert.equal(res.status, 200);
       assert.propertyVal(
@@ -324,11 +332,12 @@ suite("Functional Tests", function () {
     });
     // Delete an issue with an invalid _id: DELETE request to /api/issues/{project}
     test("DELETE/ Delete an issue with an invalid _id", async () => {
+			let project = createProject();
       let issue = createIssue(allFields);
       await issue.save();
       let res = await chai
         .request(server)
-        .delete("/api/issues/:project")
+        .delete(`/api/issues/${project.name}`)
         .send({ _id: "12385959749hff" });
       assert.equal(res.status, 500);
       assert.propertyVal(
@@ -340,11 +349,12 @@ suite("Functional Tests", function () {
     });
     // Delete an issue with missing _id: DELETE request to /api/issues/{project}
     test("DELETE/ Delete an issue with missing _id", async () => {
+			let project = createProject();
       let issue = createIssue(allFields);
       await issue.save();
       let res = await chai
         .request(server)
-        .delete("/api/issues/:project")
+        .delete(`/api/issues/${project.name}`)
         .send({});
       assert.equal(res.status, 500);
       assert.propertyVal(
