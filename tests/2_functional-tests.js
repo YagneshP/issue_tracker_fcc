@@ -234,12 +234,12 @@ suite("Functional Tests", function () {
     });
     // Update multiple fields on an issue: PUT request to /api/issues/{project}
     test("PUT / Update multiple fields on an issue", async function () {
-      let project = createProject()
+    
 			let issue = createIssue(allFields);
       await issue.save();
       let res = await chai
         .request(server)
-        .put(`/api/issues/${project.name}`)
+        .put('/api/issues/:project')
         .send({ _id: issue._id, open: false, assigned_to: "freecodecamp" });
       assert.equal(res.status, 200);
       assert.propertyVal(
@@ -258,12 +258,12 @@ suite("Functional Tests", function () {
     });
     // Update an issue with missing _id: PUT request to /api/issues/{project}
     test("PUT / Update an issue with missing _id", async function () {
-			let project = createProject();
+			// let project = createProject();
       let issue = createIssue(allFields);
       await issue.save();
       let res = await chai
         .request(server)
-        .put(`/api/issues/${project.name}`)
+        .put('/api/issues/:project')
         .send({ open: false, assigned_to: "freecodecamp" });
       // assert.equal(res.status, 500);
       assert.propertyVal(
@@ -275,12 +275,12 @@ suite("Functional Tests", function () {
     });
     // Update an issue with no fields to update: PUT request to /api/issues/{project}
     test("PUT / Update an issue with no fields to update", async function () {
-			let project = createProject();
+			// let project = createProject();
       let issue = createIssue(allFields);
       await issue.save();
       let res = await chai
         .request(server)
-        .put(`/api/issues/${project.name}`)
+        .put('/api/issues/:project')
         .send({ _id: issue._id });
       // assert.equal(res.status, 500);
       assert.propertyVal(
@@ -292,19 +292,19 @@ suite("Functional Tests", function () {
     });
     // Update an issue with an invalid _id: PUT request to /api/issues/{project}
     test("PUT /  Update an issue with an invalid _id", async function () {
-			let project = createProject();
       let issue = createIssue(allFields);
       await issue.save();
       let res = await chai
         .request(server)
-        .put(`/api/issues/${project.name}`)
-        .send({ _id: "12335050554fkdl", open: false });
+        .put('/api/issues/:project')
+        .send({ _id: "60a555b8eca7e20015e3920d", open: false });
       // assert.equal(res.status, 500);
+			// console.log(res);
       assert.propertyVal(
         res.body,
         "error",
         "could not update",
-        "not updating for any other id or error"
+        "not updating for any other id"
       );
     });
   });

@@ -52,7 +52,7 @@ module.exports = function (app) {
         await project.save();
         return res.status(200).json(newIssue);
       } catch (error) {
-				console.log(error);
+
         res
 				// .status(500)
 				.json({ error: "required field(s) missing" });
@@ -64,29 +64,35 @@ module.exports = function (app) {
       try {
    
           let foundIssue = await Issue.findById(req.body._id);
-          let fields = [
-            "issue_title",
-            "issue_text",
-            "created_by",
-            "assigned_to",
-            "open",
-            "status_text",
-          ];
-          if (fields.some((i) => req.body.hasOwnProperty(i))) {
-           let updatedIssue = await Issue.findByIdAndUpdate(req.body._id,{...req.body})
-            return res
-              .status(200)
-              .json({
-                result: "successfully updated",
-                _id: updatedIssue._id
-              });
-          } else {
-            return res
-              // .status(500)
-              .json({ error: 'no update field(s) sent', _id: foundIssue._id });
-          }
-        
+					if(foundIssue){
+						let fields = [
+							"issue_title",
+							"issue_text",
+							"created_by",
+							"assigned_to",
+							"open",
+							"status_text",
+						];
+						if (fields.some((i) => req.body.hasOwnProperty(i))) {
+							let updatedIssue = await Issue.findByIdAndUpdate(req.body._id,{...req.body})
+							 return res
+								 .status(200)
+								 .json({
+									 result: "successfully updated",
+									 _id: req.body._id
+								 });
+						 } else {
+							 return res
+								 // .status(500)
+								 .json({ error: 'no update field(s) sent', _id: foundIssue._id });
+						 }
+					} else{
+						return res
+								 // .status(500)
+								 .json({ error: 'could not update', _id: rreq.body._id });
+					}
       } catch (err) {
+				// console.log(err)
         return res
           // .status(500)
           .json({ error: "could not update", _id: req.body._id });
