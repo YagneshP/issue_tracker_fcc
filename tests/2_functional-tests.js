@@ -286,7 +286,7 @@ suite("Functional Tests", function () {
       assert.propertyVal(
         res.body,
         "error",
-        "required field(s) missing",
+        "no update field(s) sent",
         "Should get missing fields error when fileds are not provided"
       );
     });
