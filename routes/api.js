@@ -38,7 +38,6 @@ module.exports = function (app) {
 
     .post(async (req, res) => {
       try {
-				console.log("req.body:", req.body);
         let project_name = req.params.project;
         let project = await Project.findOne({ name: project_name });
         if (!project) {
@@ -92,8 +91,9 @@ module.exports = function (app) {
     })
 
     .delete(async (req, res) => {
-      try {
-        if (req.body._id) {
+      if (req.body._id) {
+			try {
+        
           const deletedIssue = await Issue.findByIdAndDelete(req.body._id);
           const updatedProject = await Project.findOneAndUpdate(
             { name: req.params.project },
@@ -106,13 +106,14 @@ module.exports = function (app) {
               _id: `${deletedIssue._id}`,
               // deletedIssue,
             });
-        } else {
-          return res.status(500).json({ error: "missing _id" });
-        }
+       
       } catch (error) {
         return res
           .status(500)
           .json({ error: "could not delete", _id: req.body._id });
       }
+			 } else {
+          return res.status(500).json({ error: "missing _id" });
+        }
     });
 };
