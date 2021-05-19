@@ -60,8 +60,9 @@ module.exports = function (app) {
     })
 
     .put(async (req, res) => {
+			if (req.body._id) {
       try {
-        if (req.body._id) {
+   
           let foundIssue = await Issue.findById(req.body._id);
           let fields = [
             "issue_title",
@@ -84,16 +85,17 @@ module.exports = function (app) {
               // .status(500)
               .json({ error: "required field(s) missing", _id: foundIssue._id });
           }
-        } else {
-          return res
-					// .status(500)
-					.json({ error: "missing _id" });
-        }
+        
       } catch (err) {
         return res
           // .status(500)
           .json({ error: "could not update", _id: req.body._id });
       }
+		} else {
+			return res
+			// .status(500)
+			.json({ error: "missing _id" });
+		}
     })
 
     .delete(async (req, res) => {
