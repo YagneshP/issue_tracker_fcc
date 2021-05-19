@@ -73,7 +73,7 @@ module.exports = function (app) {
 							"open",
 							"status_text",
 						];
-						if (fields.some((i) => req.body.hasOwnProperty(i))) {
+						if (fields.some((i) =>req.body.hasOwnProperty(i))) {
 							let updatedIssue = await Issue.findByIdAndUpdate(req.body._id,{...req.body})
 							 return res
 								 .status(200)

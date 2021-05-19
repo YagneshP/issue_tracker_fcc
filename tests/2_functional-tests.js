@@ -297,7 +297,7 @@ suite("Functional Tests", function () {
       let res = await chai
         .request(server)
         .put('/api/issues/:project')
-        .send({ _id: "60a555b8eca7e20015e3920d", open: false });
+        .send({ _id: "60a555b8eca7e20015e3920d" });
       // assert.equal(res.status, 500);
 			// console.log(res);
       assert.propertyVal(
@@ -306,6 +306,12 @@ suite("Functional Tests", function () {
         "could not update",
         "not updating for any other id"
       );
+			// assert.propertyVal(
+      //   res.body,
+      //   "_id",
+      //   "60a555b8eca7e20015e3920d",
+      //   "invalid id"
+      // );
     });
   });
 
