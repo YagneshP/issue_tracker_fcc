@@ -89,7 +89,7 @@ module.exports = function (app) {
 					} else{
 						return res
 								 // .status(500)
-								 .json({ error: 'could not update', _id: rreq.body._id });
+								 .json({ error: 'could not update', _id: req.body._id });
 					}
       } catch (err) {
 				// console.log(err)
