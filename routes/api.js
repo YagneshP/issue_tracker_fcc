@@ -32,7 +32,9 @@ module.exports = function (app) {
           return res.status(200).json(newProject.issues);
         }
       } catch (error) {
-        res.status(500).json({ error: error.message });
+        res
+				// .status(500)
+				.json({ error: error.message });
       }
     })
 
@@ -51,7 +53,9 @@ module.exports = function (app) {
         return res.status(200).json(newIssue);
       } catch (error) {
 				console.log(error);
-        res.status(500).json({ error: "required field(s) missing" });
+        res
+				// .status(500)
+				.json({ error: "required field(s) missing" });
       }
     })
 
@@ -77,7 +81,7 @@ module.exports = function (app) {
               });
           } else {
             return res
-              .status(500)
+              // .status(500)
               .json({ error: "required field(s) missing", _id: foundIssue._id });
           }
         } else {
@@ -85,7 +89,7 @@ module.exports = function (app) {
         }
       } catch (err) {
         return res
-          .status(500)
+          // .status(500)
           .json({ error: "could not update", _id: req.body._id });
       }
     })
@@ -109,11 +113,13 @@ module.exports = function (app) {
        
       } catch (error) {
         return res
-          .status(500)
+          // .status(200)
           .json({ error: "could not delete", _id: req.body._id });
       }
 			 } else {
-          return res.status(500).json({ error: "missing _id" });
+          return res
+					// .status(200)
+					.json({ error: "missing _id" });
         }
     });
 };
