@@ -14,7 +14,6 @@ module.exports = function (app) {
         }).populate("issues");
         if (foundProject) {
           if (Object.keys(queries).length !== 0) {
-            //i have used String() but not sure how it is working
             const filteredIssues = foundProject.issues.filter((issue) =>
               Object.keys(queries).every(
                 (k) => String(issue[k]) == String(queries[k])
