@@ -297,7 +297,7 @@ suite("Functional Tests", function () {
       let res = await chai
         .request(server)
         .put('/api/issues/:project')
-        .send({ _id: "60a555b8eca7e20015e3920d" });
+        .send({ _id: "60a555b8eca7e20015e3920d",issue_title:"With invalid _id" });
       // assert.equal(res.status, 500);
 			// console.log(res);
       assert.propertyVal(
